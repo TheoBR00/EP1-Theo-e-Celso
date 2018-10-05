@@ -4,16 +4,10 @@ Created on Fri Sep 14 15:42:34 2018
 
 @author: Theo B.R
 """
-import tkinter as tk
 import json
 
-window = tk.Tk()
 
-botão = tk.Button(window)
-botão.configure(text="Diga oi!")
-botão.grid()
 
-window.mainloop()
 
 
 cardapio = {'frango a parmegiana': '30.0', 'miojo': '10.0', 'macarrão': '45', 'filé mignon': '40', 'fetuccine com frutos do mar ao creme de trufas brancas': '85.0', 'petit gateau': '20.0', 'suco de maracujá': '12', 'guaraná': '5'}                                      
@@ -57,16 +51,24 @@ while verifica:
     elif escolha == 2:
         pedido = input('O que você gostaria de pedir?: ')
         
-        if pedido not in cardapio.keys():
+        while pedido not in cardapio.keys():
             print('O item {0} não está no cardápio! Tente novamente'.format(pedido))
             
             pedido = input('O que você gostaria de pedir?: ')
             
-        elif pedido in cardapio.keys():
+        if pedido in cardapio.keys():
             adicionar = int(input('O item {0} já está incluído no cardápio! Quanto você gostaria de adicionar?: '.format(pedido)))
-            conta += float(cardapio[pedido]) * adicionar
-            comanda[pedido] = adicionar
-            lista_quant.append(comanda)
+            if adicionar != 0:
+                
+                
+                conta += float(cardapio[pedido]) * adicionar
+                if pedido not in comanda.keys():
+                    
+                    comanda[pedido] = adicionar
+                else:
+                    comanda[pedido] += adicionar
+                lista_quant.append(comanda)
+            
         
         
     elif escolha == 3:
@@ -80,7 +82,7 @@ while verifica:
     
     
     elif escolha == 0:
-        print('A conta saiu R$ {0}'.format(conta))
+        print('A conta saiu R$ {0}'.format(conta * 1.1))
         print('Obrigado por utilizar nosso sistema!')
         guardar = json.dumps(comanda, sort_keys=True, indent=4)
         with open('pratos.json', 'w') as arquivo_2:
@@ -89,5 +91,6 @@ while verifica:
         
     elif escolha == 4:
         print(comanda)
+    
     
     
